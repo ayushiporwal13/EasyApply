@@ -1,5 +1,6 @@
 import { useState } from "react";
 import EasyApplyLogo from './assets/img/EASYAPPLY.jpg'
+import React from 'react';
 
 import "./App.css";
 import {
