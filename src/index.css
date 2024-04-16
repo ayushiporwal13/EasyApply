@@ -1,3 +1,6 @@
+*{
+  box-sizing: border-box;
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -67,8 +70,3 @@ button:focus-visible {
   }
 }
 
-.box-div{
-  width: 100px;
-  height: 100px;
-  border: 1px ridge blueviolet;
-}

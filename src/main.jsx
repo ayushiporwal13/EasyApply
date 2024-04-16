@@ -8,6 +8,7 @@ import NewGrad from "./pages/NewGrad.jsx";
 import Experienced from "./pages/Experienced.jsx";
 import Home from './routes/Home.jsx';
 import JobDetails from './pages/jobDetails.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

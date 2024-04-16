@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link, BrowserRouter, Route, useNavigate } from "react-router-dom";
-import EasyApplyLogo from "../assets/img/EASYAPPLY.jpg";
+import EasyApplyLogo from "../assets/img/EASYAPPLY_.svg";
 import RightArrow from "../assets/icons/arrow-right.svg";
 import Bookmark from "../assets/icons/bookmark.svg";
-import JobDetails from "./jobDetails";
 
 const Internships = () => {
   const [internships, setInternships] = useState([]);
-  const [showJobDetails, setShowJobDetails] = useState(false);
-  const navigate = useNavigate();
+  const [filteredInternships, setFilteredInternships] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedJobFunctions, setSelectedJobFunctions] = useState([]);
+  const [selectedSalary, setSelectedSalary] = useState("");
 
   useEffect(() => {
     const fetchInternships = async () => {
@@ -18,6 +19,7 @@ const Internships = () => {
         );
         const data = await response.json();
         setInternships(data);
+        setFilteredInternships(data); // Initially set filtered internships to all internships
       } catch (error) {
         console.error("Error fetching JSON data:", error);
       }
@@ -26,170 +28,292 @@ const Internships = () => {
     fetchInternships();
   }, []);
 
-  // const element = useRoutes([
-  //   {
-  //     path:'/jobDetails/:id',
-  //     element: <JobDetails data={internships} />
-  //   },
-  //   {
-  //     path:'*',
-  //     element: <h1>Not Found</h1>
-  //   }
-  // ])
 
-  // <BrowserRouter>
-      
-  //       {/* Other routes */}
-  //       <Route path="/jobDetails/:id" element={<JobDetails />} />
-     
-  //   </BrowserRouter>
-  // <Route path="/jobDetails/:id" render={(props) => <JobDetails {...props} data={internships} />} />
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Filter internships based on search text
+    let filtered = internships.filter((internship) =>
+      internship.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    // Apply location filter
+    if (selectedLocations.length > 0) {
+      filtered = filtered.filter((internship) =>
+        selectedLocations.includes(internship.location)
+      );
+    }
+
+    // Apply job function filter
+    if (selectedJobFunctions.length > 0) {
+      filtered = filtered.filter((internship) =>
+        selectedJobFunctions.includes(internship.jobFunction)
+      );
+    }
+
+    // Apply salary filter
+    if (selectedSalary !== "") {
+      filtered = filtered.filter((internship) =>
+        internship.salary.includes(selectedSalary)
+      );
+    }
+
+    setFilteredInternships(filtered);
+  };
 
   return (
     <div>
       <header>
         <img
           src={EasyApplyLogo}
-          alt="Easy Apply Logo"
-          style={{ height: "60vh", width: "100%" }}
+          alt="EasyApply Logo"
+          className="img-fluid"
+          // style={{height: "60vh", width: "100%"}}
         />
       </header>
-      <aside>
-        <form>
-          <label htmlFor="Search">Search</label>
+      <div className="container mw-100">
+        <div class="row">
+        <h2 className="mt-2">Internship Positions</h2>
+          <aside className="col-4 border-right mt-3">
+            <form className="row g-3" onSubmit={handleSubmit}>
+              <div className="col-12 d-flex">
+                <label htmlFor="Search" className="form-label p-1">
+                  <b>Search</b>
+                </label>
+                <input
+                  type="text"
+                  id="Search"
+                  name="Search"
+                  className="form-control"
+                  placeholder="Search for job titles"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+              </div>
+
+              {/* Location filter */}
+              <div className="col-12 d-flex justify-content-left">
+                <label htmlFor="Location" className="form-label">
+                  <b>Location</b>
+                </label>
+              </div>
+              <div className="col-12 row">
+                {locations.map((location) => (
+                  <div key={location} className="col-lg-6 text d-flex">
+                    <input
+                      type="checkbox"
+                      id={`Location-${location}`}
+                      name="Location"
+                      value={location}
+                      checked={selectedLocations.includes(location)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        setSelectedLocations((prev) =>
+                          checked
+                            ? [...prev, location]
+                            : prev.filter((loc) => loc !== location)
+                        );
+                      }}
+                    />
+                    <label htmlFor={`Location-${location}`} className="p-1">
+                      {location}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Job function filter */}
+              <div className="col-12 d-flex justify-content-left">
+                <label htmlFor="JobFunction" className="form-label">
+                  <b>Job Function</b>
+                </label>
+              </div>
+              <div className="col-12 row">
+                {jobFunctions.map((jobFunction) => (
+                  <div key={jobFunction} className="col-lg-6 text d-flex">
+                    <input
+                      type="checkbox"
+                      id={`Job-Function-${jobFunction}`}
+                      name="Job-Function"
+                      value={jobFunction}
+                      checked={selectedJobFunctions.includes(jobFunction)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        setSelectedJobFunctions((prev) =>
+                          checked
+                            ? [...prev, jobFunction]
+                            : prev.filter((func) => func !== jobFunction)
+                        );
+                      }}
+                    />
+                    <label
+                      htmlFor={`Job-Function-${jobFunction}`}
+                      className="p-1"
+                    >
+                      {jobFunction}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Salary filter */}
+              <div className="col-12 d-flex justify-content-left">
+                <label htmlFor="Salary" className="form-label">
+                  <b>Salary</b>
+                </label>
+              </div>
+              <div className="col-12 row">
+                {salaries.map((salary) => (
+                  <div key={salary} className="col-lg-6 text d-flex">
+                    <input
+                      type="radio"
+                      id={`Salary-${salary}`}
+                      name="Salary"
+                      value={salary}
+                      checked={selectedSalary === salary}
+                      onChange={(e) => setSelectedSalary(e.target.value)}
+                    />
+                    <label htmlFor={`Salary-${salary}`} className="p-1">
+                      {salary}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className="col-12">
+                <button
+                  type="submit"
+                  id="submit"
+                  className="btn btn-dark text-white"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </aside>
+          <InternshipsComponent internships={filteredInternships} />
+        </div>
+      </div>
+      <footer className="container mt-5">
+        <h5>Contact Us:</h5>
+        <form
+          action="https://api.sheetmonkey.io/form/41hqe59kpePUWnq8Aziz9d"
+          method="post"
+          className="row"
+        >
+          <label htmlFor="name" className="col-2 text-right m-2">Name</label>
+          <input type="text" id="name" name="name" className="col-9 m-2" required />
+          <label htmlFor="email" className="col-2 text-right m-2">Email</label>
           <input
-            type="text"
-            id="Search"
-            name="Search"
-            placeholder="Search for job title, company, or location"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Provide your email"
+            className="col-9 m-2"
+            required
           />
-          <br />
-          <label htmlFor="Location">Location</label>
-          <input
-            type="checkbox"
-            id="Location"
-            name="Location"
-            value="Australia"
-          />
-          Australia
-          <input
-            type="checkbox"
-            className="Location"
-            name="Location"
-            value="Bahamas"
-          />
-          Bahamas
-          <input
-            type="checkbox"
-            className="Location"
-            name="Location"
-            value="Canada"
-          />
-          Canada
-          <input
-            type="checkbox"
-            className="Location"
-            name="Location"
-            value="China"
-          />
-          China
-          <br />
-          <label htmlFor="Job Function">Job Function</label>
-          <input
-            type="checkbox"
-            id="Job Function"
-            name="Job Function"
-            value="Accounting"
-          />
-          Accounting
-          <input
-            type="checkbox"
-            className="Job Function"
-            name="Job Function"
-            value="Finance"
-          />
-          Finance
-          <input
-            type="checkbox"
-            className="Job Function"
-            name="Job Function"
-            value="Human Resources"
-          />
-          Human Resources
-          <input
-            type="checkbox"
-            className="Job Function"
-            name="Job Function"
-            value="Marketing"
-          />
-          Marketing
-          <input
-            type="checkbox"
-            className="Job Function"
-            name="Job Function"
-            value="Sales"
-          />
-          Sales
-          <br />
-          <label htmlFor="Salary">Salary</label>
-          <input type="radio" id="Salary" name="Salary" value="40k+" />
-          $40,000+
-          <input type="radio" className="Salary" name="Salary" value="60k+" />
-          $60,000+
-          <input type="radio" className="Salary" name="Salary" value="80k+" />
-          $80,000+
-          <input type="radio" className="Salary" name="Salary" value="100k+" />
-          $100,000+
-          <input type="radio" className="Salary" name="Salary" value="120k+" />
-          $120,000+
-          <input type="radio" className="Salary" name="Salary" value="140k+" />
-          $140,000+
-          <input type="radio" className="Salary" name="Salary" value="160k+" />
-          $160,000+
-          <input type="radio" className="Salary" name="Salary" value="180k+" />
-          $180,000+
-          <br />
-          <button type="submit" id="submit">
-            Submit
-          </button>
+          
+          <label htmlFor="message" className="col-2 text-right m-2">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Any improvements"
+            rows="5"
+            cols="50"
+            className="col-9 m-2"
+          ></textarea>
+          <div className="d-flex align-items-center justify-content-center">
+          <button type="reset" className="btn btn-primary m-2">Reset</button>
+          <button type="submit" className="btn btn-primary m-2">Submit</button>
+          </div>
         </form>
-      </aside>
-      <main>
-        {internships.map((internship) => (
-          <section key={internship.id}>
-            <h2>{internship.title}</h2>
-            <p>{internship.locations}</p>
-            <p>{internship.company_name}</p>
-            <img
-              src={Bookmark}
-              alt="Bookmark Icon"
-              style={{width:"15px", height:'15px'}}
-            />
-            {/* <button type="button" onClick={() => setShowJobDetails(true)}>
-              Learn More <img src={RightArrow} alt='right-arrow' width="100px" />
-            </button> */}
-            {/* {showJobDetails && <JobDetails data={internship} />} */}
-
-            {/* <Link to={`/jobDetails/${internship.id}`}>
-                          Learn More <img src={RightArrow} alt='right-arrow' width="100px" />
-                        </Link> */}
-
-<Link
-              to={`/jobDetails/${internship.id}`}
-              state={{ internship: internship }}
-            >
-              Learn More <img src={RightArrow} alt='right-arrow' style={{width:"15px", height:'15px'}} />
-            </Link>
-
-            {/* <Link to="/jobDetails"> */}
-            {/* Learn More <img src={RightArrow} alt='right-arrow' width="100px" />
-            <JobDetails data={internship} /> */}
-            {/* </Link> */}
-          </section>
-        ))}
-      </main>
+        <h6>© 2021 EasyApply. All rights reserved.</h6>
+      </footer>
     </div>
   );
 };
 
 export default Internships;
+
+const locations = [
+  "Australia",
+  "Bahamas",
+  "Canada",
+  "China",
+  "India",
+  "New Zealand",
+  "United Kingdom",
+  "United States",
+  "Vietnam",
+];
+
+const jobFunctions = [
+  "Accounting",
+  "Finance",
+  "Human Resources",
+  "Marketing",
+  "Sales",
+];
+
+const salaries = ["40k+", "60k+", "80k+", "120k+", "140k+", "160k+", "180k+"];
+
+const InternshipsComponent = ({ internships }) => {
+  // console.log('internships', internships);
+  return (
+    <main className="col-8 row">
+      <div className="row w-100 mt-1 p-2 d-flex flex-row justify-content-between flex-wrap ">
+        {internships.map((internship, index) => (
+          // console.log('internship', internship),
+          <div className="col-lg-4 mb-4 p-2" key={internship.id}>
+            <div className="h-100 p-4 text-white bg-dark d-flex align-items-center flex-column border rounded">
+              <h5>{internship.title}</h5>
+              {internship.locations}
+              <br />
+              {internship.company_name}
+            </div>
+            <div className='d-flex justify-content-center'>
+              <img
+                src={Bookmark}
+                alt="Bookmark Icon"
+                className="m-1"
+                style={{ width: "15px", height: "15px" }}
+              />
+              <a href={internship.url} target="_blank">
+                Learn More{" "}
+                <img
+                  src={RightArrow}
+                  alt="right-arrow"
+                  style={{ width: "15px", height: "15px" }}
+                />
+              </a>
+            </div>
+          </div>
+        ))}
+        {/* <button
+          className="carousel-control-prev"
+          type="button"
+          data-bs-target="#internshipsComponent"
+          data-bs-slide="prev"
+        >
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Previous</span>
+        </button>
+        <button
+          className="carousel-control-next"
+          type="button"
+          data-bs-target="#internshipsComponent"
+          data-bs-slide="next"
+        >
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Next</span>
+        </button> */}
+      </div>
+    </main>
+  );
+};
