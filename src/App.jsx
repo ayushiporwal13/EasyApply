@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Link, Outlet } from "react-router-dom";
-import EasyApplyLogo from "./assets/img/EASYAPPLY_.svg";
+// import EasyApplyLogo from "./assets/img/EASYAPPLY_bg.svg";
 import OfficeLogo from "./assets/img/Office.jpg";
 import OneIcon from "./assets/icons/1-square-fill.svg";
 import CollegeIcon from "./assets/icons/mortarboard-fill.svg";
@@ -10,13 +10,18 @@ import UnlockIcon from "./assets/icons/unlock-fill.svg";
 function App() {
   return (
     <div className="app">
-      <header>
-        <img
+      <header 
+      className="col d-flex flex-column justify-content-center">
+        {/* <img
           src={EasyApplyLogo}
           alt="EasyApply Logo"
           className="img-fluid"
           // style={{height: "60vh", width: "100%"}}
-        />
+        /> */}
+        <div className="">
+        <h1 className="col-12 ">EASYAPPLY</h1>
+        <h4 className="col-12">Streamlining Success: Your Path to Effortless Job Hunting</h4>
+        </div>
       </header>
       <main className="container text-center">
         <h2 className="lead mt-5 mb-4 row text-center">
@@ -70,17 +75,17 @@ function App() {
         
         <h2 className="bg-dark text-white text-center">READY TO APPLY?</h2>
         <div className="row box-div my-4 mx-3 d-flex justify-content-between">
-          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded">
+          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded m-2">
             <Link to="/intern" className="text-dark">
               <h5>INTERNSHIPS</h5>
             </Link>
           </div>
-          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded">
+          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded m-2">
             <Link to="/new-grad" className="text-white">
               <h5>NEW GRAD</h5>
             </Link>
           </div>
-          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded">
+          <div className="d-flex align-items-center justify-content-center col-lg-3 rounded m-2">
             <Link to="/experienced" className="text-dark">
               <h5>EXPERIENCED</h5>
             </Link>

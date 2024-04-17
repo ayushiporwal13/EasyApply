@@ -60,3 +60,15 @@
   background-color: #4C6085;
   /* margin: 0 1rem; */
 }
+
+header{
+  background-image: url('src/assets/img/EASYAPPLY_bg.svg');
+  background-size: cover;
+  min-height: 50vh;
+}
+
+header h1{
+  font-size: 10em;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+

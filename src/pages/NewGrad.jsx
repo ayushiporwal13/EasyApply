@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import EasyApplyLogo from "../assets/img/EASYAPPLY_.svg";
+import EasyApplyLogo from "../assets/img/EASYAPPLY_bg.svg";
 import RightArrow from "../assets/icons/arrow-right.svg";
 import Bookmark from "../assets/icons/bookmark.svg";
 
@@ -63,20 +63,33 @@ const NewGrad = () => {
 
   return (
     <div>
-      <header>
+      {/* <header>
         <img
           src={EasyApplyLogo}
           alt="EasyApply Logo"
           className="img-fluid"
           // style={{height: "60vh", width: "100%"}}
         />
+      </header> */}
+      <header 
+      className="col d-flex flex-column justify-content-center">
+        {/* <img
+          src={EasyApplyLogo}
+          alt="EasyApply Logo"
+          className="img-fluid"
+          // style={{height: "60vh", width: "100%"}}
+        /> */}
+        <div className="">
+        <h1 className="col-12 ">EASYAPPLY</h1>
+        <h4 className="col-12">Streamlining Success: Your Path to Effortless Job Hunting</h4>
+        </div>
       </header>
       <div className="container mw-100">
         <div class="row">
           <h2 className="mt-2">New Grad Positions</h2>
-          <aside className="col-4 border-right mt-3">
+          <aside className="col-md-4 border-right mt-3">
             <form className="row g-3" onSubmit={handleSubmit}>
-              <div className="col-12 d-flex">
+              <div className="col-12 d-flex justify-content-left">
                 <label htmlFor="Search" className="form-label p-1">
                   <b>Search</b>
                 </label>
@@ -99,7 +112,7 @@ const NewGrad = () => {
               </div>
               <div className="col-12 row">
                 {locations.map((location) => (
-                  <div key={location} className="col-lg-6 text d-flex">
+                  <div key={location} className="col-6 text d-flex">
                     <input
                       type="checkbox"
                       id={`Location-${location}`}
@@ -130,7 +143,7 @@ const NewGrad = () => {
               </div>
               <div className="col-12 row">
                 {jobFunctions.map((jobFunction) => (
-                  <div key={jobFunction} className="col-lg-6 text d-flex">
+                  <div key={jobFunction} className="col-6 text d-flex">
                     <input
                       type="checkbox"
                       id={`Job-Function-${jobFunction}`}
@@ -164,7 +177,7 @@ const NewGrad = () => {
               </div>
               <div className="col-12 row">
                 {salaries.map((salary) => (
-                  <div key={salary} className="col-lg-6 text d-flex">
+                  <div key={salary} className="col-6 text d-flex">
                     <input
                       type="radio"
                       id={`Salary-${salary}`}
@@ -276,8 +289,8 @@ const salaries = ["40k+", "60k+", "80k+", "120k+", "140k+", "160k+", "180k+"];
 const NewGradComponent = ({ newgrads }) => {
   // console.log('newgrads', newgrads);
   return (
-    <main className="col-8 row">
-      <div className="row w-100 mt-1 p-2 d-flex flex-row justify-content-between flex-wrap ">
+    <main className="col-md-8 row">
+      <div className="row w-100 mt-1 p-2 d-flex flex-row justify-content-center flex-wrap ">
         {newgrads.map(
           (newgrad, index) => (
             console.log("newgrad", newgrad),
